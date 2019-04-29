@@ -10,6 +10,9 @@ or extracting it by browsing Gitlab issues (for Gitlab-hosted projects).
 - A Gitlab WebHook: Fot gitlab-hosted projects, automate Botsing by integrating it in the Gitlab issue workflow
 (auto-detect exception stacks in new or updated issues, run Botsing, and publish Botsing results as an issue comment if relevant).
 
+The test/demo webapp can be used to set up your environment: configuration, link with your gitlab project...
+When it works (you can run Botsing manually through the webapp), then you can easily set up the Gitlab Web hook, as it is just one step further.
+
 ## Quick start
 
 Build: mvn clean install  
@@ -42,7 +45,7 @@ Restart the webapp or the application server if required to reload the configura
 
 Edit botsing-gitlab.properties, located in the webapp's WEB-INF/classes directory.
 
-There, you should specify (all fields mandatory):
+There, in addition to the Botsing-related setup, you should specify (all fields mandatory):
 
 - gitlab.url: the URL of the Gitlab server where your project is hosted
 - gitlab.token: the access token for the Gitlab API on your server (to generate one, go in your Gitlab user settings, choose "Access tokens", and create a personal access token with scope "api" - the token is a string that looks like "i_rjH-MM3YuFsvAxCTsH").
