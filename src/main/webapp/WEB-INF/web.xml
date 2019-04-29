@@ -1,0 +1,47 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>BotsingServlet</servlet-name>
+  	<display-name>BotsingServlet</display-name>
+  	<description></description>
+  	<servlet-class>eu.stamp_project.botsing.servlet.BotsingServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>LogFileServlet</servlet-name>
+  	<display-name>LogFileServlet</display-name>
+  	<description></description>
+  	<servlet-class>eu.stamp_project.botsing.servlet.LogFileServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>IssueServlet</servlet-name>
+  	<display-name>IssueServlet</display-name>
+  	<description></description>
+  	<servlet-class>eu.stamp_project.botsing.servlet.IssueServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>IssueWebHookServlet</servlet-name>
+  	<display-name>IssueWebHookServlet</display-name>
+  	<description></description>
+  	<servlet-class>eu.stamp_project.botsing.servlet.IssueWebHookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BotsingServlet</servlet-name>
+  	<url-pattern>/BotsingServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>LogFileServlet</servlet-name>
+  	<url-pattern>/LogFileServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>IssueServlet</servlet-name>
+  	<url-pattern>/IssueServlet</url-pattern>
+  </servlet-mapping>
+  <!-- servlet-mapping>
+  	<servlet-name>IssueWebHookServlet</servlet-name>
+  	<url-pattern>/IssueWebHookServlet</url-pattern>
+  </servlet-mapping -->
+</web-app>
