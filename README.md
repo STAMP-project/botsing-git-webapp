@@ -40,8 +40,8 @@ Restart the webapp or the application server if required to reload the configura
 
 In your Gitlab project page: go to Settings / Integrations.
 
-In the URL field, insert the URL to the WebHook servlet:
-http://`<your-server-name-or-IP`>/botsing-git-webapp/IssueWebHookServlet
+In the URL field, insert the URL to the WebHook servlet:  
+`http://<your-server-name-or-IP>/botsing-git-webapp/IssueWebHookServlet`
 
 Check the "Issues events" box (and uncheck all other ones), then click "Add webhook".
 
