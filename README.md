@@ -38,6 +38,20 @@ Restart the webapp or the application server if required to reload the configura
 
 ## Setup Gitlab Webhook to integrate Botsing in issues workflow
 
+### Webapp setup
+
+Edit botsing-gitlab.properties, located in the webapp's WEB-INF/classes directory.
+
+There, you should specify (all fields mandatory):
+
+- gitlab.url: the URL of the Gitlab server where your project is hosted
+- gitlab.token: the access token for the Gitlab API on your server (to generate one, go in your Gitlab user settings, choose "Access tokens", and create a personal access token with scope "api" - the token is a string that looks like "i_rjH-MM3YuFsvAxCTsH").
+- gitlab.project: your Gitlab project Id (appears under the project title in the project page on Gitlab).
+
+Restart the webapp or the application server if required to reload the configuration.
+
+### Webhook setup
+
 In your Gitlab project page: go to Settings / Integrations.
 
 In the URL field, insert the URL to the WebHook servlet:  
@@ -50,4 +64,6 @@ To test the webhook: create a new issue, with an exception stack inside (hint: t
 The webhook should be triggered (scan your app server logs), and if Botsing is successful, a comment will be added to the issue with corresponding Botsing output (generally, the source code of a test that reproduces the stack trace in the issue). The botsing process itself can take a few minutes, so the comment may not appear immediately.
 To perform multiple tests, simply update the issue content (or create another one).
 
-Note: if testing with a local installation of Gitlab (on localhost), you have to allow localhost Webhooks in Gitlab: log in as gitlab administrator, go to the admin area (wrench logo in the top menu), Settings/Network section, and check the "Allow requests to the local network from hooks and services" in the "Outboud requests" panel. 
+### Note concerning localhost testing
+
+If testing with a local installation of Gitlab (on localhost), you have to allow localhost Webhooks in Gitlab: log in as gitlab administrator, go to the admin area (wrench logo in the top menu), Settings/Network section, and check the "Allow requests to the local network from hooks and services" in the "Outboud requests" panel.
