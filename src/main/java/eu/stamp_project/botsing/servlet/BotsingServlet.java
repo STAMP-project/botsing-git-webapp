@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.nio.file.Files;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -87,14 +88,16 @@ public class BotsingServlet extends HttpServlet {
 			writer.append("<h1>Run botsing using pom " + pom + "</h1>\n");
 			writer.append("<pre>\n");
 			writer.flush();
-			FileUtils.deleteIfExists(new File("/tmp/botsing-webapp"));
+			
+			File tempDir = Files.createTempDirectory("botsing-webapp").toFile();
 			int retcode = BotsingInvoker.runBotsing(pom,
-					"1.0.5-SNAPSHOT", FileUtils.tempFile(exception), 1, "/tmp/botsing-webapp",
+					ServletUtils.getGitlabConfig(getServletContext()).getProperty("botsing.version"),
+					FileUtils.tempFile(exception), 1, tempDir.getAbsolutePath(),
 					new PrintStream(response.getOutputStream()));
 			writer.append("</pre>\n");
 			File test = null;
 			if(retcode == 0) {
-				test = BotsingInvoker.findGeneratedTest(new File("/tmp/botsing-webapp"));
+				test = BotsingInvoker.findGeneratedTest(tempDir);
 			}
 			
 			// If Botsing generated a test, display the code.
@@ -112,6 +115,7 @@ public class BotsingServlet extends HttpServlet {
 				} finally {
 					if(in != null) try { in.close(); } catch(Exception ignore) { }
 				}
+				FileUtils.deleteIfExists(tempDir);
 				
 			} else {
 				writer.append("<h2>FAILURE: Crash tests generation failed.</h2><br/>");
