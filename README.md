@@ -39,6 +39,8 @@ This is not applicable if using the gitlab WebHook (local.defaultpom is mandator
 
 Restart the webapp or the application server if required to reload the configuration.
 
+Note: at this step, exception stacks can be provided to Botsing as full text (paste in a text area or file upload). To retrieve exception stacks from Gitlab issues, configure gitlab link (see next section: it is just 3 more fields in the properties file).
+
 ## Setup Gitlab Webhook to integrate Botsing in issues workflow
 
 ### Webapp setup
@@ -50,6 +52,7 @@ There, in addition to the Botsing-related setup, you should specify (all fields 
 - gitlab.url: the URL of the Gitlab server where your project is hosted
 - gitlab.token: the access token for the Gitlab API on your server (to generate one, go in your Gitlab user settings, choose "Access tokens", and create a personal access token with scope "api" - the token is a string that looks like "i_rjH-MM3YuFsvAxCTsH").
 - gitlab.project: your Gitlab project Id (appears under the project title in the project page on Gitlab).
+- Make sure the path to the local POM is specified (see above - the field is now mandatory).
 
 Restart the webapp or the application server if required to reload the configuration.
 
