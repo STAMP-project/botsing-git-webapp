@@ -12,7 +12,8 @@ or extracting it by browsing Gitlab issues (for Gitlab-hosted projects).
 
 ## Quick start
 
-Build: mvn clean install
+Build: mvn clean install  
+Warning: build temporarily requires another (not yet released) project: [stamp-cicd-utils](https://github.com/STAMP-project/stamp-cicd-utils). Clone and build it prior to building botsing-git-webapp.
 
 Deploy: deploy botsing-git-webapp.war file (from target/ directory) in your favorite servlet container.
 For example, copy it in [Apache Tomcat](http://tomcat.apache.org)'s webapps/ directory.
