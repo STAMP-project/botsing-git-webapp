@@ -35,3 +35,19 @@ Note: if local.defaultpom is not specified, the test/demo webapp will work, as t
 This is not applicable if using the gitlab WebHook (local.defaultpom is mandatory for the WebHook servlet).
 
 Restart the webapp or the application server if required to reload the configuration.
+
+## Setup Gitlab Webhook to integrate Botsing in issues workflow
+
+In your Gitlab project page: go to Settings / Integrations.
+
+In the URL field, insert the URL to the WebHook servlet:
+http://<your-server-name-or-IP>/botsing-git-webapp/IssueWebHookServlet
+
+Check the "Issues events" box (and uncheck all other ones), then click "Add webhook".
+
+To test the webhook: create a new issue, with an exception stack inside (hint: the exception stack should be inserted as raw text in the markdown, no formatting: paste it between 2 lines, each of them containing only 3 backquotes).
+
+The webhook should be triggered (scan your app server logs), and if Botsing is successful, a comment will be added to the issue with corresponding Botsing output (generally, the source code of a test that reproduces the stack trace in the issue). The botsing process itself can take a few minutes, so the comment may not appear immediately.
+To perform multiple tests, simply update the issue content (or create another one).
+
+Note: if testing with a local installation of Gitlab (on localhost), you have to allow localhost Webhooks in Gitlab: log in as gitlab administrator, go to the admin area (wrench logo in the top menu), Settings/Network section, and check the "Allow requests to the local network from hooks and services" in the "Outboud requests" panel. 
