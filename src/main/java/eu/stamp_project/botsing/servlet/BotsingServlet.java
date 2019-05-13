@@ -93,6 +93,7 @@ public class BotsingServlet extends HttpServlet {
 			int retcode = BotsingInvoker.runBotsing(pom,
 					ServletUtils.getGitlabConfig(getServletContext()).getProperty("botsing.version"),
 					FileUtils.tempFile(exception), 1, tempDir.getAbsolutePath(),
+					"-Dglobal_timeout=1800", //TODO temporary due to Botsing bug (NPE if no global timeout !) - 1800 is default
 					new PrintStream(response.getOutputStream()));
 			writer.append("</pre>\n");
 			File test = null;

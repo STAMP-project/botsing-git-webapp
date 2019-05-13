@@ -89,7 +89,9 @@ public class IssueWebHookListener implements WebHookListener {
 					int retcode = BotsingInvoker.runBotsing(config.getProperty("local.defaultpom"),
 							config.getProperty("botsing.version"),
 							FileUtils.tempFile(exception),
-							1, tempDir.getAbsolutePath(), null);
+							1, tempDir.getAbsolutePath(),
+							"-Dglobal_timeout=1800", //TODO temporary due to Botsing bug (NPE if no global timeout !) - 1800 is default
+							null);
 					File test = null;
 					if(retcode == 0) {
 						test = BotsingInvoker.findGeneratedTest(tempDir);
