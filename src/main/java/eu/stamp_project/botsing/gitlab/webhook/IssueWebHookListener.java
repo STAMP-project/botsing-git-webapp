@@ -79,33 +79,38 @@ public class IssueWebHookListener implements WebHookListener {
 				//TODO The algorithm below, run botsing starting from the exception closest to the crash and stop at first test, is too simplistic...
 				
 				List<String> exceptions = ExceptionExtractor.explodeExceptions(new BufferedReader(new StringReader(event.getObjectAttributes().getDescription())));
-				// Reverse exception list: the last one is the closest to the crash !
-				Collections.reverse(exceptions);
+				
+				if(exceptions != null) {
+					// Reverse exception list: the last one is the closest to the crash !
+					Collections.reverse(exceptions);
 
-				for(String exception : exceptions) {
+					for(String exception : exceptions) {
 
-					File tempDir = Files.createTempDirectory("botsing").toFile();
-					
-					int retcode = BotsingInvoker.runBotsing(config.getProperty("local.defaultpom"),
-							config.getProperty("botsing.version"),
-							FileUtils.tempFile(exception),
-							1, tempDir.getAbsolutePath(),
-							"-Dglobal_timeout=1800", //TODO temporary due to Botsing bug (NPE if no global timeout !) - 1800 is default
-							null);
-					File test = null;
-					if(retcode == 0) {
-						test = BotsingInvoker.findGeneratedTest(tempDir);
+						File tempDir = Files.createTempDirectory("botsing").toFile();
+
+						// Check for additional "-D" options
+						String options = config.getProperty("botsing.options");
+						int retcode = BotsingInvoker.runBotsing(config.getProperty("local.defaultpom"),
+								config.getProperty("botsing.version"),
+								FileUtils.tempFile(exception),
+								1, tempDir.getAbsolutePath(),
+								options,
+								null);
+						File test = null;
+						if(retcode == 0) {
+							test = BotsingInvoker.findGeneratedTest(tempDir);
+						}
+						if(test != null) { // Successfully generated test: comment issue and break !
+							// Markdown syntax requires 2 or more spaces at EOL for line break...
+							GitlabIssueManager.commentIssue(config, event.getObjectAttributes().getIid(),
+									"** This is an auto-generated comment, from STAMP Botsing stack trace analysis tool **  \n"
+											+ "The following code snippet should generate an exception trace reported in this issue:  \n"
+											+ "```\n" + FileUtils.fileToString(test) + "\n```\n");
+						}
+						FileUtils.deleteIfExists(tempDir);
+
+						if(test != null) break; // Successful generation of test: stop with Botsing !
 					}
-					if(test != null) { // Successfully generated test: comment issue and break !
-				        // Markdown syntax requires 2 or more spaces at EOL for line break...
-						GitlabIssueManager.commentIssue(config, event.getObjectAttributes().getIid(),
-								"** This is an auto-generated comment, from STAMP Botsing stack trace analysis tool **  \n"
-								+ "The following code snippet should generate an exception trace reported in this issue:  \n"
-								+ "```\n" + FileUtils.fileToString(test) + "\n```\n");
-					}
-					FileUtils.deleteIfExists(tempDir);
-					
-					if(test != null) break; // Successful generation of test: stop with Botsing !
 				}
 			} catch (IOException ignore) { System.out.println(ignore);}
 		}

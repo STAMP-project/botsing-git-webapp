@@ -90,10 +90,12 @@ public class BotsingServlet extends HttpServlet {
 			writer.flush();
 			
 			File tempDir = Files.createTempDirectory("botsing-webapp").toFile();
+			// Check for additional "-D" options
+			String options = ServletUtils.getGitlabConfig(getServletContext()).getProperty("botsing.options");
 			int retcode = BotsingInvoker.runBotsing(pom,
 					ServletUtils.getGitlabConfig(getServletContext()).getProperty("botsing.version"),
 					FileUtils.tempFile(exception), 1, tempDir.getAbsolutePath(),
-					"-Dglobal_timeout=1800", //TODO temporary due to Botsing bug (NPE if no global timeout !) - 1800 is default
+					options,
 					new PrintStream(response.getOutputStream()));
 			writer.append("</pre>\n");
 			File test = null;
